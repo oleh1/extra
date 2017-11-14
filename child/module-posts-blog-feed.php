@@ -59,7 +59,7 @@ if ( 'standard' == $blog_feed_module_type && false === strpos( $category_id, ','
 <?php } ?>
 <?php else : ?>
 	<article class='nopost'>
-		<h5><?php esc_html_e( 'Sorry, No Posts Found', 'extra' ); ?></h5>
+		<div><?php esc_html_e( 'Sorry, No Posts Found', 'extra' ); ?></div>
 	</article>
 <?php endif; ?>
 </div><!-- /.posts-blog-feed-module -->

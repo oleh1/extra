@@ -22,6 +22,7 @@ while ( $module_posts->have_posts() ) : $module_posts->the_post();
 		<?php
 		if ( !in_array( $post_format, array( 'quote', 'link' ) ) ) {
 		?>
+        <!--noindex-->
 		<div class="post-content">
 			<?php
 				$color = extra_get_post_category_color();
@@ -83,6 +84,7 @@ while ( $module_posts->have_posts() ) : $module_posts->the_post();
 				?>
 			</div>
 		</div>
+        <!--/noindex-->
 		<?php } ?>
 	</article>
 <?php

@@ -178,9 +178,9 @@ function form_cat_desc(){
 add_shortcode('cat_desc', form_cat_desc);
 
 
-add_action('wp_head', function (){
-    echo '<meta name="keywords" content="осаго каско расчет страховка компания штраф проверка оплата гибдд действие дтп экспертиза выплата регистрация купля продажа автоновости" />';
-}, 2);
+/*add_action('wp_head', function (){
+    echo '<meta name="keywords" content="" />';
+}, 2);*/
 
 
 // register Related_coments_widget widget
@@ -292,7 +292,18 @@ add_filter('the_content', function($content){
 
                 if( preg_match( '/<(img|blockquote)/isU', $data[$x] ) ) $x++;
 
-                $data[ $x ]  .= '<div class="perelink-from-content"><div class="read-to"><span>Читайте также</span></div><div class="perelink-one">'.$perelink[0].'</div></div>';
+                $rr = $_SERVER['REQUEST_URI'];
+                $tt =  explode('/', $rr);
+
+                if ($tt[1] == 'news'){
+                    $x = 3;
+                }else{
+                    $x = 5;
+                }
+
+                if(get_post_type() != 'dwqa-answer' && get_post_type() != 'dwqa-question'){
+                    $data[ $x ]  .= '<div class="perelink-from-content"><div class="read-to"><span>Читайте также</span></div><div class="perelink-one">'.$perelink[0].'</div></div>';
+                }
 
                 for($i=$x;$i<count($data);$i++){ $p++;
                     $s += iconv_strlen(clear($data[$i]), 'UTF-8');
@@ -346,60 +357,24 @@ add_action('wp_head', function(){
 //========================================================================================================================
 
 /*category_all_news*/
-//add_filter('template_include', 'my_template');
-//function my_template( $template ) {
-//
-//    if( is_category( array( 33, 34, 22) ) ){
-//        return get_stylesheet_directory() . '/category_all_news.php';
-//    }
-//
-//    return $template;
-//
-//}
+/*add_filter('template_include', 'my_template');
+function my_template( $template ) {
 
-//add_filter( 'post_limits', 'limits' );
-//function limits( $limit ) {
-//    if ( get_post_type() == 'post' && is_category(array( 33, 34, 22)) ) {
-//        if (is_numeric($_POST['lim'])) $lim = $_POST['lim']; else $lim = 0;
-//        return 'LIMIT '.$lim.', 21';
-//    }
-//    return $limit;
-//}
-
-add_action("wp_ajax_news_p", "f_news_p");
-add_action("wp_ajax_nopriv_news_p", "f_news_p");
-function f_news_p()
-{
-    $lim = $_POST['lim'];
-    $cat = $_POST['cat'];
-
-    global $wpdb;
-
-    $prefix = $wpdb->get_blog_prefix();
-
-    $term_relationships = $prefix.'term_relationships';
-    $posts = $prefix.'posts';
-    $terms = $prefix.'terms';
-    $term_taxonomy = $prefix.'term_taxonomy';
-
-    $res_posts = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT * FROM $posts p JOIN $term_relationships tr ON p.ID = tr.object_id JOIN $term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id JOIN $terms t ON tt.term_id = t.term_id WHERE t.term_id IN($cat) AND p.post_status = 'publish' ORDER BY p.ID DESC LIMIT %d, 21", $lim
-        )
-    );
-
-    $i = 1;
-    foreach ($res_posts as $p){
-        ?>
-        <div class="et_pb_column et_pb_column_1_3 et_pb_column_<?php echo $i++; ?>">
-            <a class="one_line_a" href="<?php echo get_permalink( $p->ID ) ?>"><?php echo preg_replace('#width="200" height="150"#i', 'width="300px" height="225px"', get_the_post_thumbnail($p->ID, array(200, 150)) ); ?><div class="play_category_all_news"></div></a>
-            <div style="color: black;"><?php echo get_the_time('H:i' , $p->ID  ).' '.get_the_date('d.m.Y', $p->ID); ?></div>
-            <a class="one_line_a_t" href="<?php echo get_permalink($p->ID) ?>"><?php echo $p->post_title ?></a>
-        </div>
-        <?php
-        if($i == 4){ $i = 1; }
+    if( is_category( array( 33, 34, 22) ) ){
+        return get_stylesheet_directory() . '/category_all_news.php';
     }
-    wp_die();
+
+    return $template;
+
+}
+
+add_filter( 'post_limits', 'limits' );
+function limits( $limit ) {
+    if ( get_post_type() == 'post' && is_category(array( 33, 34, 22)) ) {
+        if (is_numeric($_POST['lim'])) $lim = $_POST['lim']; else $lim = 0;
+        return 'LIMIT '.$lim.', 21';
+    }
+    return $limit;
 }
 
 add_filter('the_content', function($content){
@@ -441,7 +416,7 @@ add_filter('the_content', function($content){
         $content .= $share;
     }
     return $content;
-});
+});*/
 /*category_all_news*/
 
 //=============================================================================================================
@@ -490,7 +465,7 @@ add_action( 'admin_init', function(){
 
 add_filter('the_content', function($content){
 
-    if(is_single()){
+    if(is_single() && get_post_type() != 'dwqa-answer' && get_post_type() != 'dwqa-question'){
 
         $r = '';
         $cat = get_the_category( get_the_ID() );
@@ -540,237 +515,12 @@ add_filter('the_content', function($content){
     return $content.$r;
 }, 1001);
 
-add_filter('the_content', function($content) {
+/*add_filter('the_content', function($content) {
     if (is_single()) {
          $r = '' . do_shortcode("[rBlock name=after_text return=1]");
     }
     return $content . $r;
-}, 1201);
-
-add_filter('the_content', function($content){
-    if(is_single()){
-        $content = preg_replace('/(<iframe.*src=[\'"](|http(|s):)\/\/(|www\.)(thesame|youtube)[^\'"]*[\'"][^>]*>[^<]*<\/iframe>)/iU', '<div class="viboom-overroll">$1</div>', $content);
-    }
-    return $content;
-});
-
-add_action('wp_footer', function (){
-    if( is_attachment() ){
-        $r = '
-        <style>
-        #leadia_science_widget{
-            display: none;
-        }
-        .distr-dinamic-right, distr-dinamic-left{
-            display: none;
-        }
-        </style>
-        ';
-        echo $r;
-    }
-});
-
-add_action( 'register_form', 'verification_of_personal_data' );
-function verification_of_personal_data() {
-    ?>
-    <div id="ver"></div>
-    <p>
-        <input type="checkbox" onclick="checked_data()" id="verification_of_personal_data" required /> <label for="verification_of_personal_data" style="cursor: pointer;"><span style="color:green;">Согласен на обработку моих данных</span></label></br>
-        <span style="color:green;">Данные не будут переданы 3-м лицам.</span>
-    </p>
-    <script>
-        window.onload = function() {
-
-            document.getElementById('wp-submit').setAttribute('type', 'button');
-            document.getElementById('wp-submit').onclick = function(){
-                var element = document.getElementById('ver');
-                element.innerHTML = '<div style="color: red">Обязательное поле</div>';
-                var element2 = document.getElementById('verification_of_personal_data');
-                if(!element2.checked) {
-                    document.getElementById('verification_of_personal_data').style.background = 'red';
-                }
-            }
-
-        };
-
-        function  checked_data() {
-            var element = document.getElementById('verification_of_personal_data');
-
-            if (element.checked) {
-                document.getElementById('wp-submit').setAttribute('type', 'submit');
-                document.getElementById('ver').style.display = 'none';
-                document.getElementById('verification_of_personal_data').style.background = '#ffffff';
-            }
-
-            if (!element.checked) {
-                document.getElementById('wp-submit').setAttribute('type', 'button');
-                document.getElementById('ver').style.display = 'block';
-                document.getElementById('verification_of_personal_data').style.background = 'red';
-            }
-        }
-
-    </script>
-    <?php
-}
-
-add_action( 'comment_form', 'add_checked' );
-function add_checked( $post_id ){
-    if ( !is_user_logged_in() ) {
-        echo '
-        <p>
-            <input style="width: 20px;height: 20px;position: relative;top: 5px;" type="checkbox" id="verification_of_personal_data_comment" required /> <label style="cursor: pointer;" for="verification_of_personal_data_comment"><span style="font-weight: bold;">Согласен на обработку моих данных. Данные не будут переданы 3-м лицам.</span></label>
-        </p>
-        ';
-    }
-}
-
-add_action('wp_footer', function(){
-    if( is_single() && get_the_ID() == '7669' || is_single() && get_the_ID() == '7645' || is_single() && get_the_ID() == '7575'){
-        echo '
-        <script>
-        jQuery(document).ready(function(){
-            setTimeout(function() {
-                var p = jQuery(".fluid-width-video-wrapper").parent().parent();
-                var c = jQuery(".fluid-width-video-wrapper").children();
-                p.append(c);
-                c.width(560);
-                c.height(315);
-                jQuery(".viboom-overroll").remove();
-                jQuery(".view-frame-video").remove();
-                jQuery(".fluid-width-video-wrapper").remove();
-            }, 1000);
-        });
-        </script>
-        ';
-    }
-});
-
-/*Изменение ссылки в Facebook*/
-function admin_style_script() {
-    // дальше у нас идут скрипты и стили загрузчика изображений WordPress
-    if ( ! did_action( 'wp_enqueue_media' ) ) {
-        wp_enqueue_media();
-    }
-    wp_enqueue_script( 'admin_js', get_stylesheet_directory_uri() . '/scripts/admin_js.js', array('jquery'), null, false );
-    wp_enqueue_style( 'admin_style', get_stylesheet_directory_uri() . '/admin_style.css' );
-}
-add_action( 'admin_enqueue_scripts', 'admin_style_script' );
-
-function true_image_uploader_field() {
-    global $post;
-    $title = get_post_meta($post->ID, 'title_facebook_new_meta', true);
-    $desc = get_post_meta($post->ID, 'desc_facebook_new_meta', true);
-    $img = get_post_meta($post->ID, 'img_facebook_new_meta', true);
-
-    $img_check = get_post_meta($post->ID, 'img_check_facebook', true);
-
-    $title = ($title) ? $title : '';
-    $desc = ($desc) ? $desc : '';
-
-    $w = 151;
-    $h = 90;
-    if( $img ) {
-        $src = $img;
-        $def = $img;
-    } else {
-        if($img_check == '1'){
-            $src = '';
-            $def = get_stylesheet_directory_uri() . '/images2/no_img.png';
-        }else{
-            preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
-            $default = $matches[1][0];
-            if($default){
-                $src = $default;
-                $def = $default;
-            }else{
-                $src = '';
-                $def = get_stylesheet_directory_uri() . '/images2/no_img.png';
-            }
-        }
-    }
-    echo '
-	
-	<table class="fb_meta">
-        <tr>
-            <td>
-                <div><div>Заголовок</div><div><input type="text" name="title_facebook_new_meta" value="'.$title.'"></div></div>
-            </td>
-            <td>
-                <div><div>Описание</div><div><textarea name="desc_facebook_new_meta">'.$desc.'</textarea></div></div>
-            </td>
-            <td>
-                <div>
-		            <img src="' . $def . '" width="'.$w.'px" height="'.$h.'px" />
-		            <div>
-                        <input type="hidden" name="img_facebook_new_meta" value="' . $src . '" />
-                        <button type="button" class="upload_image_button button">Добавить</button>
-                        <button type="button" class="remove_image_button button">Удалить</button>
-                        <input type="hidden" name="img_check_facebook" value="' . $img_check . '" />
-		            </div>
-	            </div>
-            </td>
-        </tr>
-    </table>
-	
-	<input type="hidden" name="extra_fields_nonce" value="' . wp_create_nonce(__FILE__) . '" />
-	';
-}
-
-function true_meta_boxes_u() {
-    add_meta_box('facebook_meta_new', 'Изменение вида ссылки Facebook', 'true_image_uploader_field', 'post', 'normal', 'high');
-}
-add_action('add_meta_boxes', 'true_meta_boxes_u', 1);
-
-function my_extra_fields_update( $post_id ){
-    if ( !isset($_POST['extra_fields_nonce']) || !wp_verify_nonce($_POST['extra_fields_nonce'], __FILE__) ) return false; // проверка
-    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE  ) return false; // если это автосохранение
-    if ( !current_user_can('edit_post', $post_id) ) return false; // если юзер не имеет право редактировать запись
-
-    update_post_meta($post_id, 'title_facebook_new_meta', $_POST['title_facebook_new_meta']);
-    update_post_meta($post_id, 'desc_facebook_new_meta', $_POST['desc_facebook_new_meta']);
-    update_post_meta($post_id, 'img_facebook_new_meta', $_POST['img_facebook_new_meta']);
-
-    $img_check = get_post_meta($post_id, 'img_check_facebook', true);
-    if($img_check != '1'){
-        update_post_meta($post_id, 'img_check_facebook', $_POST['img_check_facebook']);
-    }
-
-    return $post_id;
-}
-add_action('save_post', 'my_extra_fields_update', 0);
-
-add_action('wp_head', function(){
-    global $post;
-    $title = get_post_meta($post->ID, 'title_facebook_new_meta', true);
-    $desc = get_post_meta($post->ID, 'desc_facebook_new_meta', true);
-    ?>
-    <meta property="og:title" content="<?php echo $title; ?>" />
-    <meta property="og:description" content="<?php echo $desc; ?>" />
-    <?php
-});
-add_action('wp_head', function(){
-    global $post;
-    $img = get_post_meta($post->ID, 'img_facebook_new_meta', true);
-    $img_check = get_post_meta($post->ID, 'img_check_facebook', true);
-    if(!$img && $img_check != '1'){
-        ob_start();
-        ob_end_clean();
-        preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
-        $img = $matches[1][0];
-    }
-    ?>
-    <meta property="og:image" content="<?php echo $img; ?>" />
-    <?php
-}, 1);
-/*Изменение ссылки в Facebook*/
-
-add_filter('the_content', function($content){
-    if(is_single() || is_page()){
-        $content = preg_replace('/(<table)/Ui', '<div class="scrol_table">$1', $content);
-        $content = preg_replace('/(<\/table>)/Ui', '$1</div>', $content);
-    }
-    return $content;
-}, 99999);
+}, 1201);*/
 
 function breadcrumbs() {
 
@@ -905,6 +655,40 @@ function breadcrumbs() {
     }
 }
 
+/*get_soc*/
+add_action( 'widgets_init', function(){
+    register_sidebar(
+        array(
+            'name'			=>	'Соц. Сети',
+            'id'			=>	'soc',
+            'before_widget'	=>	'<div id="%1$s" class="soc-tab %2$s">',
+            'after_widget'	=>	'</div>',
+            'before_title'	=>	'<div class="ss-tab">',
+            'after_title'	=>	'</div>',
+        )
+    );
+});
+
+add_shortcode('get_soc', function(){
+    require 'includes/social-vidgets.html';
+});
+
+//reg soc vidget
+add_action( 'widgets_init', function() {
+    register_widget( 'soc_widget' );
+});
+
+class soc_widget extends WP_Widget {
+    function __construct(){
+        WP_Widget::__construct('soc_widget', 'Мы в сети', ['description' => 'Мы в сети']);
+    }
+
+    public function widget(){
+        include 'includes/social-vidgets.html';
+    }
+}
+/*get_soc*/
+
 function catch_that_image() {
     global $post, $posts;
     $first_img = '';
@@ -913,6 +697,76 @@ function catch_that_image() {
     $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
     $first_img = $matches [1] [0];
     if(!empty($first_img)) return $first_img;
+}
+
+add_filter('the_content', function($content) {
+    if (is_single()) {
+        $content = preg_replace('#(<div id="toc_container" class="no_bullets">.*</div>)#Ui', '<!--noindex-->$1<!--/noindex-->', $content);
+    }
+    return $content;
+}, 7777);
+
+add_filter('the_content', function ($content){
+    if(is_single() && get_post_type() == 'dwqa-question'){
+        $content = preg_replace('#<div class="r_post">.*</div>#Ui', '', $content);
+        $content = preg_replace('#<div id="perelink-horizontal">[^>]+*</div>#Ui', '', $content);
+    }
+    return $content;
+}, 7778);
+
+
+add_action( 'register_form', 'verification_of_personal_data' );
+function verification_of_personal_data() {
+    ?>
+    <div id="ver"></div>
+    <p>
+        <input type="checkbox" onclick="checked_data()" id="verification_of_personal_data" required /> <label for="verification_of_personal_data" style="cursor: pointer;"><span style="color:green;">Согласен на обработку моих данных</span></label></br>
+        <span style="color:green;">Данные не будут переданы 3-м лицам.</span>
+    </p>
+    <script>
+        window.onload = function() {
+
+            document.getElementById('wp-submit').setAttribute('type', 'button');
+            document.getElementById('wp-submit').onclick = function(){
+                var element = document.getElementById('ver');
+                element.innerHTML = '<div style="color: red">Обязательное поле</div>';
+                var element2 = document.getElementById('verification_of_personal_data');
+                if(!element2.checked) {
+                    document.getElementById('verification_of_personal_data').style.background = 'red';
+                }
+            }
+
+        };
+
+        function  checked_data() {
+            var element = document.getElementById('verification_of_personal_data');
+
+            if (element.checked) {
+                document.getElementById('wp-submit').setAttribute('type', 'submit');
+                document.getElementById('ver').style.display = 'none';
+                document.getElementById('verification_of_personal_data').style.background = '#ffffff';
+            }
+
+            if (!element.checked) {
+                document.getElementById('wp-submit').setAttribute('type', 'button');
+                document.getElementById('ver').style.display = 'block';
+                document.getElementById('verification_of_personal_data').style.background = 'red';
+            }
+        }
+
+    </script>
+    <?php
+}
+
+add_action( 'comment_form', 'add_checked' );
+function add_checked( $post_id ){
+    if ( !is_user_logged_in() ) {
+        echo '
+        <p>
+            <input style="width: 20px;height: 20px;position: relative;top: 5px;" type="checkbox" id="verification_of_personal_data_comment" required /> <label style="cursor: pointer;" for="verification_of_personal_data_comment"><span style="font-weight: bold;">Согласен на обработку моих данных. Данные не будут переданы 3-м лицам.</span></label>
+        </p>
+        ';
+    }
 }
 
 add_shortcode('subcategories', 'subcategories');
@@ -990,5 +844,38 @@ function subcategories(){
         </style>
         <?php
     }
+}
+
+add_filter('the_content', function($content){
+    if(is_single() || is_page()){
+        $content = preg_replace('/(<table)/Ui', '<div class="scrol_table">$1', $content);
+        $content = preg_replace('/(<\/table>)/Ui', '$1</div>', $content);
+    }
+    return $content;
+}, 99999);
+
+add_filter('the_content', function($content){
+    if(is_single()){
+        $content = preg_replace_callback('#(<(h[2-6])><span[^>].*>(.*)</span></(h[2-6])>)#Ui', function ($v){
+            return '<'.$v[2].'>'.$v[3].'</'.$v[4].'>';
+        }, $content);
+    }
+    return $content;
+}, 99999);
+
+function clear_link($data){
+    $r = $_SERVER['SERVER_PROTOCOL'];
+    $r = explode('/', $r);
+    if($r[0] == 'HTTP'){
+        $h = 'http';
+    }else if($r[0] == 'HTTPS'){
+        $h = 'https';
+    }
+    $url_self	= $h.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    $url_self	= addcslashes($url_self, '/');
+    $data		= preg_replace("/href=\"".$url_self."\"/", "", $data);
+    $data		= preg_replace("#href=\"".$_SERVER['REQUEST_URI']."\"#", "", $data);
+
+    return $data;
 }
 ?>

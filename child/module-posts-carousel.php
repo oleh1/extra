@@ -54,7 +54,7 @@ if ( $module_posts->have_posts() ) :
 <?php else: ?>
 <div class="module post-carousel-module et_pb_extra_module">
 	<article class="post carousel-item nopost">
-		<h5><?php esc_html_e( 'Sorry, no posts found.', 'extra' ); ?></h5>
+		<div><?php esc_html_e( 'Sorry, no posts found.', 'extra' ); ?></div>
 	</article>
 </div>
 <?php endif;

@@ -1,0 +1,22 @@
+<div class="social-tabs">
+    <div class="title">Мы в сети</div>
+    <div class="soc-tabs"></div>
+    <?php if(function_exists('dynamic_sidebar')) dynamic_sidebar('soc');?>
+</div>
+<div class="clear"></div>
+<script>
+    <!--
+    jQuery(document).ready(function(){
+        jQuery('.social-tabs .ss-tab').each(function(i){
+            if(i < 1) jQuery(this).next().addClass('soc-active');
+            jQuery('.social-tabs .soc-tabs').append('<div class="s-tab '+ ( i < 1 ? 'tab-active' : '' ) +'" onclick="tab_active('+ i +')">'+ jQuery(this).text() +'</div>');
+        });
+    });
+    function tab_active(e){
+        jQuery('.s-tab').removeClass('tab-active');
+        jQuery('.s-tab:eq('+ e +')').addClass('tab-active');
+        jQuery('.social-tabs .textwidget').removeClass('soc-active');
+        jQuery('.social-tabs .textwidget:eq('+ e +')').addClass('soc-active');
+    }
+    -->
+</script>

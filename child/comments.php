@@ -10,7 +10,7 @@ endif;
 
 <section id="comment-wrap">
 <?php if ( have_comments() && ! empty( $comments_by_type['comment'] ) ) : ?>
-	<h2 id="comments" class="page_title"><?php comments_number( esc_html__( '0 Коментариев', 'extra' ), esc_html__( '1 Коментарий', 'extra' ), '% ' . esc_html__( 'Коментария', 'extra' ) ); ?></h2>
+	<div id="comments" class="page_title"><?php comments_number( esc_html__( '0 Коментариев', 'extra' ), esc_html__( '1 Коментарий', 'extra' ), '% ' . esc_html__( 'Коментария', 'extra' ) ); ?></div>
 <?php endif; ?>
 	<?php if ( have_comments() ) : ?>
 		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
@@ -35,7 +35,7 @@ endif;
 
 		<?php if ( ! empty( $comments_by_type['pings'] ) ) : ?>
 			<div id="trackbacks">
-				<h3 id="trackbacks-title"><?php esc_html_e( 'Trackbacks/Pingbacks', 'extra' ); ?></h3>
+				<div id="trackbacks-title"><?php esc_html_e( 'Trackbacks/Pingbacks', 'extra' ); ?></div>
 				<ol class="pinglist">
 					<?php wp_list_comments( 'type=pings&callback=et_list_pings' ); ?>
 				</ol>
@@ -51,7 +51,7 @@ endif;
 		</div>
 	<?php endif; ?>
 	<?php if ( 'open' == $post->comment_status ) : ?>
-		<?php comment_form( array('label_submit' => esc_attr__( 'Post Comment', 'extra' ), 'comment_field' => '<p class="comment-form-comment"><label for="comment">' . esc_html_x( 'COMMENT', 'noun', 'extra' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>', 'title_reply' => '<span>' . esc_attr__( 'Leave a reply', 'extra' ) . '</span>', 'title_reply_to' => esc_attr__( 'Leave a Reply to %s', 'extra' ) ) ); ?>
+		<?php comment_form( array('title_reply_before' => '<div style="font-size: 25px;margin: 0 0 10px 0;" id="reply-title" class="comment-reply-title">', 'title_reply_after' => '</div>', 'label_submit' => esc_attr__( 'Post Comment', 'extra' ), 'comment_field' => '<p class="comment-form-comment"><label for="comment">' . esc_html_x( 'COMMENT', 'noun', 'extra' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>', 'title_reply' => '<span>' . esc_attr__( 'Leave a reply', 'extra' ) . '</span>', 'title_reply_to' => esc_attr__( 'Leave a Reply to %s', 'extra' ) ) ); ?>
 	<?php else: ?>
 
 	<?php endif; ?>

@@ -12,7 +12,6 @@
 <html <?php language_attributes(); ?>>
 <!--<![endif]-->
 <head>
-    <meta property="fb:pages" content="1687286441287193" />
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<?php elegant_description(); ?>
 	<?php elegant_keywords(); ?>
@@ -34,27 +33,6 @@
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
-
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '1768477286510783',
-            xfbml      : true,
-            version    : 'v2.10'
-        });
-        FB.AppEvents.logPageView();
-    };
-
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
-
-
 	<div id="page-container">
 		<?php $header_vars = extra_get_header_vars(); ?>
 		<!-- Header -->
@@ -139,6 +117,13 @@
 								</li>
 								<?php } ?>
 							<?php } ?>
+                            <li class="et-extra-social-icon">
+                                <a href="https://vk.com/zakon7ya" class="et-extra-icon vk24" target="_blank">
+                                    <div>
+                                        <img src="<?php echo get_template_directory_uri(); ?>/../child/images2/vk24.png">
+                                    </div>
+                                </a>
+                            </li>
 						</ul>
 						<?php } ?>
 
@@ -208,7 +193,7 @@
 								$menu_class .= ' et_disable_top_tier';
 							}
 
-							$primary_nav = wp_nav_menu( array(
+							$primary_nav = clear_link( wp_nav_menu( array(
 								'theme_location'            => 'primary-menu',
 								'container'                 => '',
 								'fallback_cb'               => '',
@@ -218,7 +203,7 @@
 								'walker'                    => new Extra_Walker_Nav_Menu,
 								'header_search_field_alone' => $header_vars['header_search_field_alone'],
 								'header_cart_total_alone'   => $header_vars['header_cart_total_alone'],
-							) );
+							) ) );
 
 							if ( !$primary_nav ) {
 							?>

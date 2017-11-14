@@ -61,8 +61,5 @@
 		<span title="<?php esc_attr_e( 'Back To Top', 'extra' ); ?>" id="back_to_top"></span>
 	<?php } ?>
 	<?php wp_footer(); ?>
-    <?php do_shortcode("[rBlock name=video]") ?>
-<div class="img_reklama1"><?php do_shortcode("[rBlock name=img_reklama1]"); ?></div>
-<div class="img_reklama2"><?php do_shortcode("[rBlock name=img_reklama2]"); ?></div>
 </body>
 </html>

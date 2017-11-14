@@ -14,7 +14,6 @@
 							$additional_class = $et_pb_has_comments_module ? ' et_pb_no_comments_section' : '';
 						?>
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'module single-post-module' . $additional_class ); ?>>
-                            <?php do_shortcode("[rBlock name=fix_telephone]"); ?>
 							<?php if ( is_post_extra_title_meta_enabled() ) { ?>
 							<div class="post-header">
                                 <?php
@@ -32,14 +31,14 @@
                                         $i++;
                                     }
                                 }
-                                if( in_array(array(33,22,34), $cat_all) ){
+//                                if( in_array(array(33,22,34), $cat_all) ){
+                                  if( false ){
                                     ?>
                                     <div class="social-icons ed-social-share-icons">
                                         <?php
                                         $share = extra_post_share_links( false );
 
-//                                        if( in_array(array(33,22,34), $cat_all) ){
-                                        if( false ){
+                                        if( in_array(array(33,22,34), $cat_all) ){
                                             $share = preg_replace('#(et-extra-icon-facebook)#i', '$1 category_facebook ', $share);
                                             $share = preg_replace('#(et-extra-icon-twitter)#i', '$1 category_twitter ', $share);
                                             $share = preg_replace('#(et-extra-icon-googleplus)#i', '$1 category_googleplus ', $share);
@@ -50,53 +49,16 @@
                                             $share = preg_replace('#(et-extra-icon-basic_print)#i', '$1 category_basic_print ', $share);
                                         }
 
-                                        $facebook = preg_match_all('/http:\/\/www\.facebook\.com\/sharer\.php\?u=(.*)"/U', $share, $f);
-
                                         $share = preg_replace('/http:\/\/www\.pinterest\.com\/pin\/create\/button\/\?url=(.*);description=(.*);media=(.*)"/',
                                             'https://vk.com/share.php?url=$1&description=$2&image=$3"', $share);
-                                        //echo $share;
+                                        echo $share;
                                         ?>
                                     </div>
                                     <?php
                                 }
                                 ?>
                                 <?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
-								<h1 class="entry-title"><?php the_title(); ?></h1>
-                                <?php
-                                if( in_array(array(33,22,34), $cat_all) ){
-                                    ?>
-                                    <style>
-                                        .PRVD_chatWindow{
-                                            display: none;
-                                        }
-                                        .single-top-info{
-                                            display: none;
-                                        }
-                                    </style>
-                                    <div class="subscribe_share">
-                                        <div class="subscribe">Подписаться на Avtozakony.ru</div>
-                                        <a target="_blank" onclick="window.open(this.href,this.target,'width=700,height=400,scrollbars=1');return false;" href="<?php echo $f[0][0]; ?>"><div class="share">Поделиться в Facebook</div></a>
-                                        <div class="desc_f">
-                                            Ребята, мы вкладываем душу в Avtozakony.ru. Cпасибо за то,
-                                            что открываете эту красоту. Спасибо за вдохновение и мурашки.
-                                            Присоединяйтесь к нам в <span class="f">Facebook</span>
-
-                                            <div id="fb-root"></div>
-                                            <script>(function(d, s, id) {
-                                                    var js, fjs = d.getElementsByTagName(s)[0];
-                                                    if (d.getElementById(id)) return;
-                                                    js = d.createElement(s); js.id = id;
-                                                    js.src = "//connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.9";
-                                                    fjs.parentNode.insertBefore(js, fjs);
-                                                }(document, 'script', 'facebook-jssdk'));</script>
-
-                                            <div class="fb-like" data-href="https://www.facebook.com/giznzarulem/" data-layout="button" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>
-
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                                ?>
+								<h1><?php the_title(); ?></h1>
 							</div>
 							<?php } ?>
 
@@ -266,12 +228,8 @@
 				?>
 
 				<?php do_shortcode("[rBlock name=after_post]"); ?>
-                <?php
-                if( !in_array(array(33,22,34), $cat_all) ) {
-                    echo get_option('author_expert');
-                    do_shortcode("[rBlock name=after_post2]");
-                }
-                ?>
+                <?php echo get_option('author_expert'); ?>
+				<?php do_shortcode("[rBlock name=after_post2]"); ?>
 
 				<?php
 				if ( comments_open() && 'on' == et_get_option( 'extra_show_postcomments', 'on' ) && ! $et_pb_has_comments_module ) {
