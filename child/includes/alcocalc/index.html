@@ -1,0 +1,155 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">	
+
+<div class="calculator prof">
+	<div class="calcul-1">
+		<div class="extra-params">
+			<div class="param">Пол:</div>
+				<div class="calc">
+					<select id="sex" name="sex">
+						<option value="1" selected="selected">Мужчина</option>
+						<option value="0">Женщина</option>
+					</select>
+				</div>
+				
+				<div class="param">Масса тела:</div>
+				<div class="calc">
+					<input name="weight" value="75" maxlength="3" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;" type="text">
+					<em class="unit"> кг</em>
+				</div>
+		</div>
+		<div class="clear"></div>
+		<div id="calculator">
+			<div>
+				<ul>
+					<li>
+						<table>
+							<tr>
+								<td>
+									<div class="param">Напиток</div>
+									<select name="drink" class="drink" for="picker-1484058347336">
+										<option max="89.9" min="45" abv="">Абсент</option>
+										<option max="17.5" min="4" abv="">Алкопоп</option>
+										<option max="1.2" min="0" abv="">Безалкогольное пиво</option>
+										<option max="60" min="36" abv="">Бренди</option>
+										<option max="18" min="9" abv="" selected="selected">Вино</option>
+										<option max="55" min="40" abv="">Виски</option>
+										<option max="56" min="32" abv="40">Водка</option>
+										<option max="25" min="14" abv="">Десертное вино</option>
+										<option max="50" min="40" abv="">Джин</option>
+										<option max="1.5" min="0.05" abv="0">Квас</option>
+										<option max="45" min="40" abv="40">Коньяк</option>
+										<option max="20" min="15.5" abv="">Крепленое вино</option>
+										<option max="55" min="15" abv="">Ликер</option>
+										<option max="18" min="15" abv="16">Мартини</option>
+										<option max="16" min="8" abv="">Медовый напиток</option>
+										<option max="60" min="32" abv="">Мескаль</option>
+										<option max="45" min="40" abv="">Настойка</option>
+										<option max="86" min="42" abv="">Палинка</option>
+										<option max="12" min="2" abv="5">Пиво</option>
+										<option max="86" min="42" abv="">Ракия</option>
+										<option max="80" min="37.5" abv="">Ром</option>
+										<option max="20" min="18" abv="">Саке</option>
+										<option max="8.5" min="2" abv="">Сидр</option>
+										<option max="45" min="20" abv="">Соджу</option>
+										<option max="60" min="38" abv="">Сотол</option>
+										<option max="99" min="95" abv="">Спирт</option>
+										<option max="60" min="32" abv="">Текила</option>
+										<option max="12" min="8" abv="11">Шампанское</option>
+										<option max="45" min="25" abv="">Шочу</option>
+										<option max="15" min="8" abv="">Ячменное вино</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="picker-container strong">
+									<div class="param" style="height: 38px;">Крепость</div>
+									<div class="strong-picker">
+										<div class="picker" value="13.5"></div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td style="white-space:nowrap; padding-right: 1em;"><div class="param">Количество</div>
+									<input name="volume" class="volume custom-text" maxlength="4" value="100" type="text">
+									<em class="unit"> мл</em>
+								</td>
+							</tr>
+							<tr>
+								<td class="picker-container time-left">
+									<div class="param" style="height: 38px;">Время</div>
+									<div class="time-picker">
+										<div class="picker" value="9"></div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="param"></div>
+			<div class="calc">
+				<input value="" name="empty-stomack" id="empty-stomack" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;" checked="checked" type="checkbox"> <label for="empty-stomack">Пустой желудок</label>
+			</div>
+			
+			<div class="result">
+				<h2>Результат</h2>
+				<p>Aлкоголя в крови <span class="value ppm">0,2 ‰</span></p>
+				<p>Время протрезвления <span class="value sober-time">2 часа</span></p>
+				<p>Время до посадки за руль <span class="value drive-time">2 часа</span></p>
+				
+				<div class="alco_status">
+					<div class="alert drive"><span class="result-2">Можно садиться за руль</span></div>
+					<div class="alert none"><span class="result-2">Почти незаметное влияние алкоголя</span></div>
+					<div class="alert easy"><span class="result-2">Легкое опьянение</span></div>
+					<div class="alert middle"><span class="result-2">Средняя степень опьянения</span></div>
+					<div class="alert strong"><span class="result-2">Сильное опьянение</span></div>
+					<div class="alert poisoning"><span class="result-2">Тяжелое отравление</span></div>
+					<div class="alert death"><span class="result-2">Смертельная доза</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="calcul-2"></div>
+
+	<script type="text/javascript" src="/wp-content/themes/child/includes/alcocalc/data/jquery-1.js"></script>
+	<script type="text/javascript" src="/wp-content/themes/child/includes/alcocalc/data/sprintf.js"></script>
+	<script type="text/javascript" src="/wp-content/themes/child/includes/alcocalc/data/ru-ru.js"></script>
+	<script type="text/javascript" src="/wp-content/themes/child/includes/alcocalc/data/jquery_003.js"></script>
+	<script type="text/javascript" src="/wp-content/themes/child/includes/alcocalc/data/alcohol.js"></script>
+	
+	<script>
+		var $calc, $list, params, alerts;
+		var tab = "beverage";
+		$calc = $('#calculator');
+		$list = $calc.find('div:first ul');
+		var $params = $('.extra-params');
+		
+		params = {
+					$sex         : $params.find('select[name = "sex"]'),
+					$weight      : $params.find('input[name = "weight"]'),
+					$emptyStomack: $calc.find('input[name = "empty-stomack"]')
+				}
+				
+		alerts = {
+					$drive     : $('.alert.drive'),
+					$none      : $('.alert.none'),        
+					$easy      : $('.alert.easy'),
+					$middle    : $('.alert.middle'),
+					$strong    : $('.alert.strong'),
+					$poisoning : $('.alert.poisoning'),
+					$death     : $('.alert.death')
+				}
+				
+		$calc.additionalList({
+					onAdd: onBeverageAdd,
+					onRemove: onBeverageChange,
+					onChange: onBeverageChange
+				});
+				
+		for (i in params)
+			params[i].bind('click keyup', onBeverageChange);
+			
+			params.$weight.get(0).focus();
+	</script>
+</div>
